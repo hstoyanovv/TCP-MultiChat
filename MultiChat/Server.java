@@ -54,8 +54,6 @@ public class Server {
 
                 System.out.println("Client could not be connected");
             }
-
-
         }
 
     }
@@ -75,7 +73,6 @@ class clientThread extends Thread {
         this.clients = clients;
 
     }
-
 
     public void run() {
 
@@ -154,13 +151,26 @@ class clientThread extends Thread {
                 }
 
                 else if (line.startsWith("@")) {
-                    unicast(line,name);
+                    if(line.contains("::")){
+                        unicast(line,name);
+                    }
+                    else{
+                        this.os.writeObject("Please enter valid format :: ");
+                        this.os.flush();
+                    }
                 }
 
                 // If the message is blocked from a given client.
 
                 else if(line.startsWith("!")) {
-                    blockcast(line,name);
+                    if(line.contains("::")){
+                        blockcast(line,name);
+                    }
+                    else{
+                        this.os.writeObject("Please enter valid format :: ");
+                        this.os.flush();
+                    }
+
                 }
 
                 else {
@@ -200,7 +210,7 @@ class clientThread extends Thread {
         }
     }
 
-    /**** Transfers message or files to all the client except a particular client connected to the server ***/
+    /*** Transfer message or files to all the client except a particular client connected to the server ***/
 
     void blockcast(String line, String name) throws IOException, ClassNotFoundException {
 
@@ -223,11 +233,6 @@ class clientThread extends Thread {
                         curr_client.os.flush();
                     }
                 }
-
-                // Echo this message to let the user know the blocked file was sent.
-
-                //this.os.writeObject(">>Blockcast File sent to everyone except "+words[0].substring(1));
-                //this.os.flush();
                 System.out.println("File sent by "+ this.clientName.substring(1) + " to everyone except " + words[0].substring(1));
             }
         }
@@ -249,10 +254,6 @@ class clientThread extends Thread {
 
                             }
                         }
-                        // Echo this message to let the user know the blocked message was sent.
-
-                        //this.os.writeObject(">>Blockcast message sent to everyone except "+words[0].substring(1));
-                        //this.os.flush();
                         System.out.println("Message sent by "+ this.clientName.substring(1) + " to everyone except " + words[0].substring(1));
                     }
                 }
@@ -260,7 +261,7 @@ class clientThread extends Thread {
         }
     }
 
-    /**** This function transfers message or files to all the client connected to the server ***/
+    /*** Transfer message or files to all the client connected to the server ***/
 
     void broadcast(String line, String name) throws IOException, ClassNotFoundException {
         // Transferring a File to all the clients
@@ -297,14 +298,11 @@ class clientThread extends Thread {
                         curr_client.os.flush();
                     }
                 }
-
-                //this.os.writeObject("Broadcast message sent successfully.");
-                //this.os.flush();
                 System.out.println("Broadcast message sent by " + this.clientName.substring(1));
             }
         }
     }
-    // This function transfers message or files to a particular client connected to the server
+    /*** Transfer message or files to a particular client connected to the server ***/
 
     void unicast(String line, String name) throws IOException, ClassNotFoundException {
 
@@ -315,6 +313,7 @@ class clientThread extends Thread {
         if (words[1].split(" ")[0].toLowerCase().equals("sendfile"))
         {
             byte[] file_data = (byte[]) is.readObject();
+            int cnt = 0;
 
             for (clientThread curr_client : clients) {
                 if (curr_client != null && curr_client != this && curr_client.clientName != null
@@ -325,13 +324,13 @@ class clientThread extends Thread {
                     curr_client.os.writeObject(file_data);
                     curr_client.os.flush();
                     System.out.println(this.clientName.substring(1) + " transferred a private file to client "+ curr_client.clientName.substring(1));
-
-                    // Echo this message to let the sender know the private message was sent.
-
-                   // this.os.writeObject("Private File sent to " + curr_client.clientName.substring(1));
-                    //this.os.flush();
+                    cnt++;
                     break;
                 }
+            }
+            if(cnt == 0){
+                this.os.writeObject("This person is not online! Write: Who is online?");
+                this.os.flush();
             }
         }
 
@@ -344,19 +343,22 @@ class clientThread extends Thread {
 
                 if (!words[1].isEmpty()) {
 
+                    int cnt = 0;
                     for (clientThread curr_client : clients) {
                         if (curr_client != null && curr_client != this && curr_client.clientName != null
                                 && curr_client.clientName.equals(words[0])) {
                             curr_client.os.writeObject("<" + name + ">_private " + words[1]);
                             curr_client.os.flush();
-
+                            cnt++;
                             System.out.println(this.clientName.substring(1) + " transferred a private message to client "+ curr_client.clientName.substring(1));
-
-                            // Echo this message to let the sender know the private message was sent.
-                            //this.os.writeObject("Private Message sent to " + curr_client.clientName.substring(1));
-                            //this.os.flush();
                             break;
                         }
+                    }
+
+                    if(cnt == 0){
+                        this.os.writeObject("This person is not online! Write: Who is online?");
+                        this.os.flush();
+
                     }
                 }
             }
