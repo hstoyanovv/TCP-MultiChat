@@ -27,21 +27,21 @@ public class Client implements Runnable {
 
         Scanner s = new Scanner(System.in);
 
-        System.out.println("Please enter host:");
-        String host;
-        host = s.nextLine();
+        System.out.println("Please enter Server IP:");
+        String ip;
+        ip = s.nextLine();
 
         System.out.println("Please enter port connect to the server:");
         int portNumber;
         portNumber = s.nextInt();
 
         try {
-            clientSocket = new Socket(host, portNumber);
+            clientSocket = new Socket(ip, portNumber);
             inputLine = new BufferedReader(new InputStreamReader(System.in));
             os = new ObjectOutputStream(clientSocket.getOutputStream());
             is = new ObjectInputStream(clientSocket.getInputStream());
         } catch (UnknownHostException e) {
-            System.err.println("Unknown " + host);
+            System.err.println("Unknown " + ip);
         } catch (IOException e) {
             System.err.println("No Server found. Please ensure that the Server program is running and try again.");
         }
@@ -56,7 +56,7 @@ public class Client implements Runnable {
 
                 while (!closed) {
 
-                    // Read input from Client
+                    // Read input from MultiChat.Client
 
                     String msg = inputLine.readLine().trim();
 
@@ -211,3 +211,4 @@ public class Client implements Runnable {
         }
     }
 }
+
