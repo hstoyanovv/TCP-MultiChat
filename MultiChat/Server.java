@@ -320,7 +320,7 @@ class clientThread extends Thread {
                 if (curr_client != null && curr_client != this && curr_client.clientName != null
                         && curr_client.clientName.equals(words[0]))
                 {
-                    curr_client.os.writeObject("< " + name + ">_private Send to you File");
+                    curr_client.os.writeObject("<" + name + ">_private Send to you File");
                     curr_client.os.writeObject("Sending_File:"+words[1].split(" ",2)[1].substring(words[1].split("\\s",2)[1].lastIndexOf(File.separator)+1));
                     curr_client.os.writeObject(file_data);
                     curr_client.os.flush();
