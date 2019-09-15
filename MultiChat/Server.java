@@ -227,7 +227,7 @@ class clientThread extends Thread {
                     if (curr_client != null && curr_client != this && curr_client.clientName != null
                             && !curr_client.clientName.equals("@"+words[0].substring(1)))
                     {
-                        curr_client.os.writeObject("<" + name + ">_private Send to you File");
+                        curr_client.os.writeObject(name + "(private): Send to you File");
                         curr_client.os.writeObject("Sending_File:"+words[1].split(" ",2)[1].substring(words[1].split("\\s",2)[1].lastIndexOf(File.separator)+1));
                         curr_client.os.writeObject(file_data);
                         curr_client.os.flush();
@@ -248,7 +248,7 @@ class clientThread extends Thread {
                         for (clientThread curr_client : clients) {
                             if (curr_client != null && curr_client != this && curr_client.clientName != null
                                     && !curr_client.clientName.equals("@"+words[0].substring(1))) {
-                                curr_client.os.writeObject("<" + name + ">_private " + words[1]);
+                                curr_client.os.writeObject(name + "(private): " + words[1]);
                                 curr_client.os.flush();
 
 
@@ -273,7 +273,7 @@ class clientThread extends Thread {
                 for (clientThread curr_client : clients) {
 
                     if (curr_client != null && curr_client.clientName != null && curr_client.clientName!=this.clientName) {
-                        curr_client.os.writeObject("<" + name + ">_public Send to you File");
+                        curr_client.os.writeObject(name + "(public): Send to you File");
                         curr_client.os.writeObject("Sending_File:"+line.split("\\s",2)[1].substring(line.split("\\s",2)[1].lastIndexOf(File.separator)+1));
                         curr_client.os.writeObject(file_data);
                         curr_client.os.flush();
@@ -294,7 +294,7 @@ class clientThread extends Thread {
                 for (clientThread curr_client : clients) {
 
                     if (curr_client != null && curr_client.clientName != null && curr_client.clientName!=this.clientName) {
-                        curr_client.os.writeObject("<" + name + ">_public " + line);
+                        curr_client.os.writeObject(name + "(public): " + line);
                         curr_client.os.flush();
                     }
                 }
@@ -319,7 +319,7 @@ class clientThread extends Thread {
                 if (curr_client != null && curr_client != this && curr_client.clientName != null
                         && curr_client.clientName.equals(words[0]))
                 {
-                    curr_client.os.writeObject("<" + name + ">_private Send to you File");
+                    curr_client.os.writeObject(name + "(private): Send to you File");
                     curr_client.os.writeObject("Sending_File:"+words[1].split(" ",2)[1].substring(words[1].split("\\s",2)[1].lastIndexOf(File.separator)+1));
                     curr_client.os.writeObject(file_data);
                     curr_client.os.flush();
@@ -347,7 +347,7 @@ class clientThread extends Thread {
                     for (clientThread curr_client : clients) {
                         if (curr_client != null && curr_client != this && curr_client.clientName != null
                                 && curr_client.clientName.equals(words[0])) {
-                            curr_client.os.writeObject("<" + name + ">_private " + words[1]);
+                            curr_client.os.writeObject(name + "(private): " + words[1]);
                             curr_client.os.flush();
                             cnt++;
                             System.out.println(this.clientName.substring(1) + " transferred a private message to client "+ curr_client.clientName.substring(1));
