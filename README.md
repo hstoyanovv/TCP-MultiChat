@@ -1,4 +1,4 @@
-# TCP-MultiChat console project, which was on AWS EC2 cloud instance, from the course Fundamentals of cloud application development, FMI.
+# TCP-MultiChat Server-Client console project, which ran on AWS EC2 cloud instance, from the course Fundamentals of cloud application development, FMI.
 
 Functionality
 1. Send message to one client (private chat).
