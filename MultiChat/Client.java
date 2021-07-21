@@ -22,6 +22,7 @@ public class Client implements Runnable {
     private static BufferedReader inputLine = null;
     private static BufferedInputStream bis = null;
     private static boolean closed = false;
+    //test test
 
     public static void main(String[] args) {
 
